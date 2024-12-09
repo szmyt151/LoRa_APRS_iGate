@@ -155,7 +155,7 @@ bool Configuration::readFile() {
 
         aprs_is.active                  = data["aprs_is"]["active"] | false;
         aprs_is.passcode                = data["aprs_is"]["passcode"] | "XYZWV";
-        aprs_is.server                  = data["aprs_is"]["server"] | "rotate.aprs2.net";
+        aprs_is.server                  = data["aprs_is"]["server"] | "euro.aprs2.net";
         aprs_is.port                    = data["aprs_is"]["port"] | 14580;
         aprs_is.filter                  = data["aprs_is"]["filter"] | "m/10";
         aprs_is.messagesToRF            = data["aprs_is"]["messagesToRF"] | false;
@@ -164,11 +164,11 @@ bool Configuration::readFile() {
         digi.mode                       = data["digi"]["mode"] | 0;
         digi.ecoMode                    = data["digi"]["ecoMode"] | false;
 
-        loramodule.txFreq               = data["lora"]["txFreq"] | 433775000;
-        loramodule.rxFreq               = data["lora"]["rxFreq"] | 433775000;
-        loramodule.spreadingFactor      = data["lora"]["spreadingFactor"] | 12;
+        loramodule.txFreq               = data["lora"]["txFreq"] | 434855000;
+        loramodule.rxFreq               = data["lora"]["rxFreq"] | 434855000;
+        loramodule.spreadingFactor      = data["lora"]["spreadingFactor"] | 9;
         loramodule.signalBandwidth      = data["lora"]["signalBandwidth"] | 125000;
-        loramodule.codingRate4          = data["lora"]["codingRate4"] | 5;
+        loramodule.codingRate4          = data["lora"]["codingRate4"] | 7;
         loramodule.power                = data["lora"]["power"] | 20;
         loramodule.txActive             = data["lora"]["txActive"] | false;
         loramodule.rxActive             = data["lora"]["rxActive"] | false;
@@ -272,17 +272,17 @@ void Configuration::init() {
 
     aprs_is.active                  = false;
     aprs_is.passcode                = "XYZVW";
-    aprs_is.server                  = "rotate.aprs2.net";
+    aprs_is.server                  = "euro.aprs2.net";
     aprs_is.port                    = 14580;
     aprs_is.filter                  = "m/10";
     aprs_is.messagesToRF            = false;
     aprs_is.objectsToRF             = false;
 
-    loramodule.txFreq               = 433775000;
-    loramodule.rxFreq               = 433775000;
-    loramodule.spreadingFactor      = 12;
+    loramodule.txFreq               = 434855000;
+    loramodule.rxFreq               = 434855000;
+    loramodule.spreadingFactor      = 9;
     loramodule.signalBandwidth      = 125000;
-    loramodule.codingRate4          = 5;
+    loramodule.codingRate4          = 7;
     loramodule.power                = 20;
     loramodule.txActive             = false;
     loramodule.rxActive             = true;

@@ -61,15 +61,15 @@ namespace Utils {
         }
         if (WiFi.status() == WL_CONNECTED && Config.aprs_is.active && Config.beacon.sendViaAPRSIS) {
             delay(1000);
-            status.concat(",qAC:>https://github.com/richonguzman/LoRa_APRS_iGate ");
-            status.concat(versionDate);
+            // status.concat(",qAC:>https://github.com/richonguzman/LoRa_APRS_iGate ");
+            // status.concat(versionDate);
             APRS_IS_Utils::upload(status);
             SYSLOG_Utils::log(2, status, 0, 0.0, 0);   // APRSIS TX
             statusAfterBoot = false;
         }
         if (statusAfterBoot && !Config.beacon.sendViaAPRSIS && Config.beacon.sendViaRF) {
-            status.concat(":>https://github.com/richonguzman/LoRa_APRS_iGate ");
-            status.concat(versionDate);
+            // status.concat(":>https://github.com/richonguzman/LoRa_APRS_iGate ");
+            // status.concat(versionDate);
             STATION_Utils::addToOutputPacketBuffer(status);
             statusAfterBoot = false;
         }
@@ -94,7 +94,7 @@ namespace Utils {
         #endif
         Serial.println("\nStarting Station: " + Config.callsign + "   Version: " + versionDate);
         Serial.println((Config.digi.ecoMode) ? "(DigiEcoMode: ON)" : "(DigiEcoMode: OFF)");
-        displayShow(" LoRa APRS", "", "", "   ( iGATE & DIGI )", "", "" , "  CA2RXU  " + versionDate, 4000);
+        displayShow(" LoRa APRS", "", "", "   ( iGATE & DIGI )", "", "" , "  SZMYT  " + versionDate, 4000);
         #ifdef INTERNAL_LED_PIN
             digitalWrite(INTERNAL_LED_PIN,LOW);
         #endif
