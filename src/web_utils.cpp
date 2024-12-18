@@ -175,6 +175,9 @@ namespace WEB_Utils {
 
         Config.battery.sendVoltageAsTelemetry   = request->hasParam("battery.sendVoltageAsTelemetry", true);
         
+        Config.weather.active                  = request->hasParam("weather.active", true);
+        Config.weather.apiKey               = request->getParam("weather.apiKey", true)->value();
+        
         Config.wxsensor.active                  = request->hasParam("wxsensor.active", true);
         Config.wxsensor.heightCorrection        = request->getParam("wxsensor.heightCorrection", true)->value().toInt();
         Config.wxsensor.temperatureCorrection   = request->getParam("wxsensor.temperatureCorrection", true)->value().toFloat();

@@ -84,6 +84,13 @@ public:
     bool    sendVoltageAsTelemetry;
 };
 
+class WEATHER {
+public:
+    bool    active;
+    String     apiKey;
+    String     stationId;
+};
+
 class WXSENSOR {
 public:
     bool    active;
@@ -144,6 +151,7 @@ public:
     Display                 display;
     BATTERY                 battery;
     WXSENSOR                wxsensor;
+    WEATHER                 weather;
     SYSLOG                  syslog;
     TNC                     tnc;  
     OTA                     ota;

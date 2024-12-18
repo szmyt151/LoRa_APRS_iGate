@@ -76,6 +76,10 @@ void Configuration::writeFile() {
     data["wxsensor"]["heightCorrection"]        = wxsensor.heightCorrection;
     data["wxsensor"]["temperatureCorrection"]   = wxsensor.temperatureCorrection;
 
+    data["weather"]["active"]                  = weather.active;
+    data["weather"]["apiKey"]                  = weather.apiKey;
+    data["weather"]["stationId"]                  = weather.stationId;
+
     data["syslog"]["active"]                    = syslog.active;
     data["syslog"]["server"]                    = syslog.server;
     data["syslog"]["port"]                      = syslog.port;
@@ -190,6 +194,10 @@ bool Configuration::readFile() {
 
         battery.sendVoltageAsTelemetry  = data["battery"]["sendVoltageAsTelemetry"] | false;
 
+        weather.active                 = data["weather"]["active"] | false;
+        weather.apiKey                 = data["weather"]["apiKey"] | "apikey";
+        weather.stationId             = data["weather"]["stationId"] | "stationId";
+
         wxsensor.active                 = data["wxsensor"]["active"] | false;
         wxsensor.heightCorrection       = data["wxsensor"]["heightCorrection"] | 0;
         wxsensor.temperatureCorrection  = data["wxsensor"]["temperatureCorrection"] | 0.0;
@@ -294,6 +302,10 @@ void Configuration::init() {
     syslog.active                   = false;
     syslog.server                   = "lora.link9.net";
     syslog.port                     = 1514;
+
+    weather.active                 = false;
+    weather.apiKey                 = "apikey";
+    weather.stationId              = "stationId";
 
     wxsensor.active                 = false;
     wxsensor.heightCorrection       = 0;

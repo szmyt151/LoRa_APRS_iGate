@@ -11,6 +11,7 @@
 #include "wifi_utils.h"
 #include "gps_utils.h"
 #include "wx_utils.h"
+#include "wx_weather.h"
 #include "display.h"
 #include "utils.h"
 
@@ -33,7 +34,6 @@ extern float                snr;
 extern int                  freqError;
 extern String               distance;
 extern bool                 WiFiConnected;
-extern int                  wxModuleType;
 extern bool                 backUpDigiMode;
 extern bool                 shouldSleepLowVoltage;
 extern bool                 transmitFlag;
@@ -224,13 +224,14 @@ namespace Utils {
                 }
             #endif
 
-            if (Config.wxsensor.active && wxModuleType != 0) {
+            if (Config.wxsensor.active) {
                 String sensorData = WX_Utils::readDataSensor();
                 beaconPacket += sensorData;
                 secondaryBeaconPacket += sensorData;
-            } else if (Config.wxsensor.active && wxModuleType == 0) {
-                beaconPacket += ".../...g...t...";
-                secondaryBeaconPacket += ".../...g...t...";
+            } else if (Config.weather.active) {
+                String sensorData = WX_Weather::readData();
+                beaconPacket += sensorData;
+                secondaryBeaconPacket += sensorData;
             }
             beaconPacket            += Config.beacon.comment;
             secondaryBeaconPacket   += Config.beacon.comment;
