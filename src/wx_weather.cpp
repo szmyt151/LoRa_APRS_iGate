@@ -4,6 +4,7 @@
 #include "display.h"
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <ctime>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 #define CORRECTION_FACTOR (8.2296) // for meters
@@ -38,6 +39,8 @@ namespace WX_Weather
             http.begin("https://api.weather.com");
 
             int httpCode = http.GET();
+            Serial.println("getWxAccessViaWifi httpCode= " + httpCode);
+
             if (httpCode > 0)
             {
                 if (httpCode == 401)
@@ -84,7 +87,7 @@ namespace WX_Weather
                     }
                     else
                     {
-                        Serial.println(error.c_str());
+                        Serial.println("Error get weather data");
                     }
                 }
             }
