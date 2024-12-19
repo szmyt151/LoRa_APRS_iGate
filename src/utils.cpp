@@ -47,6 +47,7 @@ uint32_t lastBeaconTx = 0;
 uint32_t lastScreenOn = millis();
 String beaconPacket;
 String secondaryBeaconPacket;
+String wxWundergroundPacket;
 
 namespace Utils
 {
@@ -264,18 +265,6 @@ namespace Utils
                 beaconPacket += sensorData;
                 secondaryBeaconPacket += sensorData;
             }
-            else if (Config.weather.active)
-            {
-                String baseAPRSISTelemetryPacket = Config.callsign;
-                baseAPRSISTelemetryPacket += ">APLRG1,TCPIP,qAR,";
-                baseAPRSISTelemetryPacket += Config.callsign;
-                baseAPRSISTelemetryPacket += ":";
-
-                String sensorData = WX_Weather::readData();
-                baseAPRSISTelemetryPacket += sensorData;
-
-                APRS_IS_Utils::upload(baseAPRSISTelemetryPacket);
-            }
             beaconPacket += Config.beacon.comment;
             secondaryBeaconPacket += Config.beacon.comment;
 
@@ -351,6 +340,19 @@ namespace Utils
                 A7670_Utils::uploadToAPRSIS(beaconPacket);
 #else
                 APRS_IS_Utils::upload(beaconPacket);
+
+                if (Config.weather.active)
+                {
+                    wxWundergroundPacket = Config.callsign;
+                    wxWundergroundPacket += ">APLRG1,TCPIP,qAC,";
+                    wxWundergroundPacket += Config.callsign;
+                    wxWundergroundPacket += ":";
+
+                    String sensorData = WX_Weather::readData();
+                    wxWundergroundPacket += sensorData;
+                    Utils::println(wxWundergroundPacket);
+                    APRS_IS_Utils::upload(wxWundergroundPacket);
+                }
 #endif
             }
 

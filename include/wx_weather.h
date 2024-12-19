@@ -6,7 +6,6 @@
 
 namespace WX_Weather {
 
-    void    getWxAccessViaWifi();
     void    getWeatherDataApi();
     void    setup();
     String  generateTempString(const float sensorTemp);

@@ -2,6 +2,7 @@
 #include "configuration.h"
 #include "wx_utils.h"
 #include "display.h"
+#include "utils.h"
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
@@ -10,10 +11,6 @@
 
 extern Configuration Config;
 extern String fifthLine;
-
-bool wxModuleAccess = false;
-
-const String weatherUrl = "https://api.weather.com/v2/pws/observations/current?stationId=" + Config.weather.stationId + "&format=json&units=e&apiKey=" + Config.weather.apiKey;
 
 String obsTimeUtc;
 float lat;
@@ -27,45 +24,29 @@ float pressure_in;
 
 namespace WX_Weather
 {
-
-    void getWxAccessViaWifi()
-    {
-        if (Config.weather.active)
-        {
-
-            // Wykonanie zapytania HTTP GET
-            HTTPClient http;
-            http.begin("https://api.weather.com");
-
-            int httpCode = http.GET();
-            if (httpCode > 0)
-            {
-                if (httpCode == 401)
-                {
-                    wxModuleAccess = true;
-                }
-            }
-
-            http.end();
-        }
-    }
-
     void getWeatherDataApi()
     {
-        if (wxModuleAccess && Config.weather.apiKey && Config.weather.stationId)
+        Utils::println("getWeatherDataApi apiKey= " + Config.weather.apiKey);
+        Utils::println("getWeatherDataApi stationId= " + Config.weather.stationId);
+
+        if (Config.weather.apiKey && Config.weather.stationId)
         {
+            const String weatherUrl = "https://api.weather.com/v2/pws/observations/current?stationId=" + Config.weather.stationId + "&format=json&units=e&apiKey=" + Config.weather.apiKey;
+
             HTTPClient http;
             http.begin(weatherUrl);
 
             int httpCode = http.GET();
-            Serial.println("getWeatherDataApi httpCode= " + httpCode);
+            Utils::println("getWeatherDataApi httpCode= " + httpCode);
 
             if (httpCode > 0)
             {
                 if (httpCode == 200)
                 {
                     String payload = http.getString();
-                    Serial.println("getWeatherDataApi payload= " + payload);
+                    http.end();
+
+                    Utils::println("getWeatherDataApi payload= " + payload);
 
                     DynamicJsonDocument doc(payload.length() * 2);
                     DeserializationError error = deserializeJson(doc, payload);
@@ -81,15 +62,15 @@ namespace WX_Weather
                         windSpeed = doc["observations"][0]["imperial"]["windSpeed"];
                         windGust = doc["observations"][0]["imperial"]["windGust"];
                         pressure_in = doc["observations"][0]["imperial"]["pressure"];
+                        return;
                     }
                     else
                     {
-                        Serial.println(error.c_str());
+                        Utils::println("Error get weather data");
                     }
                 }
+                http.end();
             }
-
-            http.end();
         }
     }
 
@@ -97,8 +78,7 @@ namespace WX_Weather
     {
         if (Config.wxsensor.active)
         {
-            getWxAccessViaWifi();
-            if (wxModuleAccess && Config.weather.apiKey && Config.weather.stationId)
+            if (Config.weather.apiKey && Config.weather.stationId)
             {
                 getWeatherDataApi();
             }
