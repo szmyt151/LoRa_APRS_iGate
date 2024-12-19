@@ -58,11 +58,15 @@ namespace WX_Weather
             http.begin(weatherUrl);
 
             int httpCode = http.GET();
+            Serial.println("getWeatherDataApi httpCode= " + httpCode);
+
             if (httpCode > 0)
             {
                 if (httpCode == 200)
                 {
                     String payload = http.getString();
+                    Serial.println("getWeatherDataApi payload= " + payload);
+
                     DynamicJsonDocument doc(payload.length() * 2);
                     DeserializationError error = deserializeJson(doc, payload);
 
@@ -77,6 +81,10 @@ namespace WX_Weather
                         windSpeed = doc["observations"][0]["imperial"]["windSpeed"];
                         windGust = doc["observations"][0]["imperial"]["windGust"];
                         pressure_in = doc["observations"][0]["imperial"]["pressure"];
+                    }
+                    else
+                    {
+                        Serial.println(error.c_str());
                     }
                 }
             }
@@ -161,23 +169,31 @@ namespace WX_Weather
     {
         getWeatherDataApi();
 
-        fifthLine = "BME-> ";
-        fifthLine += String(fahrenheitToCelsius(temp_f));
-        fifthLine += "C ";
-        fifthLine += humidity;
-        fifthLine += "% ";
-        fifthLine += String(inHgToTenthsHpa(pressure_in)).substring(0, 4);
-        fifthLine += "hPa";
+        int year, month, day, hour, minute, second;
+        sscanf(obsTimeUtc.c_str(), "%d-%d-%dT%d:%d:%dZ", &year, &month, &day, &hour, &minute, &second);
 
-        char wxPacket[50];
+        int lat_deg = (int)lat;
+        float lat_min = (lat - lat_deg) * 60.0;
 
+        int lon_deg = (int)lon;
+        float lon_min = (lon - lon_deg) * 60.0;
+
+        char lat_str[11];
+        char lon_str[12];
+        snprintf(lat_str, sizeof(lat_str), "%02d%05.2fN", lat_deg, lat_min);
+        snprintf(lon_str, sizeof(lon_str), "%03d%05.2fE", lon_deg, lon_min);
+
+        char wxPacket[200];
         snprintf(wxPacket, sizeof(wxPacket),
+                 "@%02d%02d%02dz%s/%s_"
                  "c%03d"
                  "s%03d"
                  "g%03d"
                  "t%03d"
                  "h%02d"
                  "b%05d",
+                 day, hour, minute,
+                 lat_str, lon_str,
                  winddir,
                  (int)windSpeed,
                  (int)windGust,
