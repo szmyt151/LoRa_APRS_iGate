@@ -26,6 +26,8 @@ namespace WX_Weather
 {
     void getWeatherDataApi()
     {
+        Utils::println("getWeatherDataApi start");
+
         Utils::println("getWeatherDataApi apiKey= " + Config.weather.apiKey);
         Utils::println("getWeatherDataApi stationId= " + Config.weather.stationId);
 
@@ -48,7 +50,7 @@ namespace WX_Weather
 
                     Utils::println("getWeatherDataApi payload= " + payload);
 
-                    DynamicJsonDocument doc(payload.length() * 2);
+                    StaticJsonDocument<2048> doc;
                     DeserializationError error = deserializeJson(doc, payload);
 
                     if (!error)
@@ -62,6 +64,8 @@ namespace WX_Weather
                         windSpeed = doc["observations"][0]["imperial"]["windSpeed"];
                         windGust = doc["observations"][0]["imperial"]["windGust"];
                         pressure_in = doc["observations"][0]["imperial"]["pressure"];
+                        Utils::println("getWeatherDataApi stop");
+
                         return;
                     }
                     else
@@ -76,10 +80,15 @@ namespace WX_Weather
 
     void setup()
     {
+        Utils::println("Wx weather setup");
+
         if (Config.wxsensor.active)
         {
+            Utils::println("Wx weather active");
+
             if (Config.weather.apiKey && Config.weather.stationId)
             {
+                Utils::println("Wx weather run getWeatherDataApi");
                 getWeatherDataApi();
             }
         }
@@ -147,7 +156,10 @@ namespace WX_Weather
 
     String readData()
     {
+        Utils::println("Wx weather readData");
+
         getWeatherDataApi();
+        Utils::println("Wx weather readData done");
 
         int year, month, day, hour, minute, second;
         sscanf(obsTimeUtc.c_str(), "%d-%d-%dT%d:%d:%dZ", &year, &month, &day, &hour, &minute, &second);

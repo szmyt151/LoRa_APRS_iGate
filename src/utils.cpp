@@ -343,6 +343,7 @@ namespace Utils
 
                 if (Config.weather.active)
                 {
+                    WX_Weather::setup();
                     wxWundergroundPacket = Config.callsign;
                     wxWundergroundPacket += ">APLRG1,TCPIP,qAC,";
                     wxWundergroundPacket += Config.callsign;

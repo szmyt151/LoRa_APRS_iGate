@@ -61,7 +61,7 @@
   "weather": {
     "active": false,
     "apikey": "059d4c230072409d9d4c230072609daa",
-    "stationId": "IKRZYW12",
+    "stationId": "ILUBO3",
     "stationKey": "4yCnLTid"
   },
   "syslog": { "active": false, "server": "192.168.0.100", "port": 514 },
