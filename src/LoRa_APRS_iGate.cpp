@@ -42,6 +42,7 @@ ___________________________________________________________________*/
 #include "tnc_utils.h"
 #include "ntp_utils.h"
 #include "wx_utils.h"
+#include "wx_weather.h"
 #include "display.h"
 #include "utils.h"
 #ifdef HAS_A7670
@@ -130,6 +131,7 @@ void setup() {
     NTP_Utils::setup();
     SYSLOG_Utils::setup();
     WX_Utils::setup();
+    WX_Weather::setup();
     WEB_Utils::setup();
     TNC_Utils::setup();
     #ifdef HAS_A7670

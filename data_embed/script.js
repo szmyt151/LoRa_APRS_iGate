@@ -177,6 +177,11 @@ function loadSettings(settings) {
     document.getElementById("wxsensor.heightCorrection").value          = settings.wxsensor.heightCorrection;
     document.getElementById("wxsensor.temperatureCorrection").value     = settings.wxsensor.temperatureCorrection.toFixed(1);
     
+    // WX WUNDERGROUND
+    document.getElementById("weather.active").checked                  = settings.weather.active;
+    document.getElementById("weather.apiKey").value          = settings.weather.apiKey;
+    document.getElementById("weather.stationId").value     = settings.weather.stationId;
+    
     // SYSLOG
     document.getElementById("syslog.active").checked                    = settings.syslog.active;
     document.getElementById("syslog.server").value                      = settings.syslog.server;

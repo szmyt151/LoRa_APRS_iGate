@@ -2,6 +2,7 @@
 #include "configuration.h"
 #include "wx_utils.h"
 #include "display.h"
+#include "utils.h"
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
@@ -38,6 +39,8 @@ namespace WX_Weather
             http.begin("https://api.weather.com");
 
             int httpCode = http.GET();
+            Utils::println("getWxAccessViaWifi httpCode= " + httpCode);
+
             if (httpCode > 0)
             {
                 if (httpCode == 401)
@@ -58,14 +61,14 @@ namespace WX_Weather
             http.begin(weatherUrl);
 
             int httpCode = http.GET();
-            Serial.println("getWeatherDataApi httpCode= " + httpCode);
+            Utils::println("getWeatherDataApi httpCode= " + httpCode);
 
             if (httpCode > 0)
             {
                 if (httpCode == 200)
                 {
                     String payload = http.getString();
-                    Serial.println("getWeatherDataApi payload= " + payload);
+                    Utils::println("getWeatherDataApi payload= " + payload);
 
                     DynamicJsonDocument doc(payload.length() * 2);
                     DeserializationError error = deserializeJson(doc, payload);
@@ -84,7 +87,7 @@ namespace WX_Weather
                     }
                     else
                     {
-                        Serial.println(error.c_str());
+                        Utils::println("Error get weather data");
                     }
                 }
             }
